@@ -9,20 +9,26 @@ body {
 
 #container {
     display: grid;
+    grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
     width: 100vw;
     height: 100vh;
+
+    background-color: rgb(117, 193, 223);
 }
 
 .app-container {
-    grid-column: 2;
+    grid-column: 1 / 4;
+    grid-row: 2;
 
     display: grid;
     grid-template-rows: repeat(4, 1fr);
 
-    width: 700px;
     height: 700px;
-    border: solid black 2px;
+    /* border: solid black 2px; */
+
+    background-color: rgb(111, 122, 180);
+    background-color: white;
 }
 
 .search-bar {
