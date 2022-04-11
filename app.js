@@ -69,7 +69,9 @@ async function getData(place) {
     }   catch(err)   { console.log(err) }
 }
 
-// testBtn.addEventListener('click', getWeatherStatus);
+testBtn.addEventListener('click', function(){
+    getCityWeather(getData())
+});
 
 
 // async function getWeatherStatus(){
@@ -78,4 +80,9 @@ async function getData(place) {
 //     })
 // }
 
+
+async function getCityWeather(city){
+    let readyCity = await city;
+    console.log(`From inside getCityWeather: \nthe weather status is: ${readyCity.weather[0]['main']}`);
+}
 
