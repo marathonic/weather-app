@@ -86,7 +86,6 @@ searchBtn.addEventListener('click', function(){
 
 
     populateInfo(getData());
-    createSlider(getData());
 });
 
 

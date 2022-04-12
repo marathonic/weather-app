@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&display=swap');
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -5,6 +7,7 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Short Stack';
 }
 
 #container {
@@ -36,6 +39,7 @@ body {
     height: 40px;
     font-size: 19px;
     padding: 10px;
+
 }
 
 .search-btn {
@@ -65,7 +69,7 @@ body {
 
 .display-div > p {
     font-family: 'Grape Nuts';
-    font-size: 42px;
+    font-size: 35px;
     text-align: center;
     margin: 0;
 }
@@ -87,6 +91,7 @@ body {
 .sticker-div {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
     font-family: 'AGUSTINASANS';
     font-size: 42px;
@@ -124,19 +129,6 @@ body {
     background: #04AA6D;
     cursor: pointer;
   }
-  
-  .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #04AA6D;
-    cursor: pointer;
-  }
-
-
-
-
-
 
 /* font-face rules */
 
