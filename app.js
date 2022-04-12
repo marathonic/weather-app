@@ -1,4 +1,3 @@
-// API Key: 5476438a2af68421de84b1b40b773273
 
 //DOM Structure
 const container = document.querySelector('#container');
@@ -6,6 +5,7 @@ const appContainer = document.createElement('div');
 appContainer.classList.add('app-container');
 
 const searchBar = document.createElement('input');
+searchBar.placeholder = '...';
 searchBar.classList.add('search-bar');
 
 
@@ -112,8 +112,9 @@ let placeName = document.createElement('p');
 let currentStatus = document.createElement('p');
 let tempMax = document.createElement('p');
 let tempMin = document.createElement('p');
+let happyFace = document.createElement('p');
+happyFace.id = 'happy-face';
 // let placeWeather = document.createElement('p'); 
-let placeWeatherDetail = document.createElement('p');
 let weatherIcon = document.createElement('img');
 
 //put sticker and city name in one bar
@@ -122,16 +123,25 @@ stickerDiv.classList.add('sticker-div');
 stickerDiv.appendChild(weatherIcon);
 stickerDiv.appendChild(placeName);
 
+//put city name in its own bar so the text can wrap center
+let cityNameDiv = document.createElement('div');
+cityNameDiv.classList.add('city-name-div');
+cityNameDiv.appendChild(placeName);
+
+
 //stick min--max temps to either side
 let tempsDiv = document.createElement('div');
 tempsDiv.classList.add('temps-div');
 tempsDiv.appendChild(tempMin);
 tempsDiv.appendChild(tempMax);
 
+stickerDiv.appendChild(cityNameDiv);
 displayDiv.appendChild(stickerDiv);
 displayDiv.appendChild(currentStatus);
 displayDiv.appendChild(tempsDiv);
-displayDiv.appendChild(placeWeatherDetail);
+displayDiv.appendChild(happyFace);
+
+//scribble a doodle at the bottom
 
 class City {
     constructor(place){
@@ -148,12 +158,13 @@ class City {
 async function populateInfo(myData){
     let placeData = await myData;
     // console.log(`from inside the populateInfo function, \n we're returning a new class: ${new City(placeData)}`);
-    placeName.innerHTML = `${(placeData.name).toLowerCase()}$ ${(placeData.country).toLowerCase()}`;
+    placeName.innerHTML = `${(placeData.name).toLowerCase()} ${(placeData.country).toLowerCase()}`;
+    if(placeData.name == 'Minatitlán') placeName.innerHTML = 'minatitlan';
     currentStatus.innerHTML = `${placeData.temp}° C, ${placeData.weather_detail}`;
-    tempMax.innerHTML = `max: ${placeData.temp_max}° C`;
-    tempMin.innerHTML = `min: ${placeData.temp_min}° C`;
-    placeWeatherDetail.innerHTML = placeData.weather_detail;
-    
+    tempMax.innerHTML = `max: ${placeData.temp_max}°`;
+    tempMin.innerHTML = `min: ${placeData.temp_min}°`;
+    happyFace.innerHTML = '*';
+
     //Give icon an image depending on the weather
     switch (placeData.weather) {
         case 'Clouds':
@@ -165,6 +176,10 @@ async function populateInfo(myData){
             weatherIcon.src = './img/rainy.png';
             break;
     
+        case 'Snow':
+            weatherIcon.src = './img/snow.png';
+            break;
+
         default:
             break;
     }
@@ -173,7 +188,23 @@ async function populateInfo(myData){
 
     switch(placeData.weather_detail) {
         case 'overcast clouds':
-            weatherIcon.src = 'img/cloudy.png'
+            weatherIcon.src = './img/cloudy.png'
+            break;
+
+        case'clear sky':
+            weatherIcon.src = './img/sunny.png'
+            break;
+
+        case 'broken clouds':
+            weatherIcon.src = './img/cloudy.png';
+            break;
+
+        case 'few clouds':
+            weatherIcon.src = './img/partly-cloudy.png'
+            break;
+            
+        default:
+            break;
     }
 
 
