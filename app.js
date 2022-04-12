@@ -112,18 +112,56 @@ async function getDataReturned(funk){
 
 //Front-end & UI functionality
 
-
+let placeName = document.createElement('p');
+let tempCurrent = document.createElement('p');
+let tempMax = document.createElement('p');
+let tempMin = document.createElement('p');
+let placeWeather = document.createElement('p');
+let placeWeatherDetail = document.createElement('p');
+let weatherIcon = document.createElement('img');
+displayDiv.appendChild(weatherIcon);
+displayDiv.appendChild(placeName);
+displayDiv.appendChild(tempCurrent);
+displayDiv.appendChild(tempMax);
+displayDiv.appendChild(tempMin);
+displayDiv.appendChild(placeWeather);
+displayDiv.appendChild(placeWeatherDetail);
 
 class City {
     constructor(place){
         this.name = place.name,
-        this.country = place.country
+        this.country = place.country,
+        this.temp = place.temp,
+        this.temp_max = place.temp_max,
+        this.temp_min = place.temp_min,
+        this.weather = place.weather,
+        this.weather_detail = place.weather_detail
     }
 }
 
 async function populateInfo(myData){
     let placeData = await myData;
     // console.log(`from inside the populateInfo function, \n we're returning a new class: ${new City(placeData)}`);
+    placeName.innerHTML = `${placeData.name}, ${placeData.country}`;
+    tempCurrent.innerHTML = `${placeData.temp}° C now`;
+    tempMax.innerHTML = `max: ${placeData.temp_max}° C`;
+    tempMin.innerHTML = `min: ${placeData.temp_min}° C`;
+    placeWeather.innerHTML = placeData.weather;
+    placeWeatherDetail.innerHTML = placeData.weather_detail;
+    
+    //Give icon an image depending on the weather
+    switch (placeData.weather) {
+        case 'Clouds':
+            console.log('Cloud icon should be visible');
+            weatherIcon.src = './img/cloud.png';
+            break;
+    
+        default:
+            break;
+    }
+
     console.log(new City(placeData))
+
+
     return new City(placeData)
 }
