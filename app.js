@@ -8,13 +8,10 @@ appContainer.classList.add('app-container');
 const searchBar = document.createElement('input');
 searchBar.classList.add('search-bar');
 
+
 const searchBtn = document.createElement('button');
 searchBtn.innerHTML = 'search';
 searchBtn.classList.add('search-btn');
-
-const testBtn = document.createElement('button');
-testBtn.innerHTML = 'TEST';
-testBtn.classList.add('test-btn');
 
 const searchAreaDiv = document.createElement('div');
 searchAreaDiv.classList.add('search-area-div');
@@ -24,9 +21,8 @@ displayDiv.classList.add('display-div');
 
 
 searchAreaDiv.appendChild(searchBar);
-searchAreaDiv.appendChild(searchBtn);
 
-searchAreaDiv.appendChild(testBtn);
+searchAreaDiv.appendChild(searchBtn);
 
 appContainer.appendChild(searchAreaDiv);
 appContainer.appendChild(displayDiv);
@@ -83,13 +79,14 @@ async function getData(place) {
     }   catch(err)   { console.log(err) }
 }
 
-testBtn.addEventListener('click', function(){
+searchBtn.addEventListener('click', function(){
     // getCityWeather(getData())
     // getDataReturned(getData());
 
 
 
     populateInfo(getData());
+    createSlider(getData());
 });
 
 
@@ -113,18 +110,28 @@ async function getDataReturned(funk){
 //Front-end & UI functionality
 
 let placeName = document.createElement('p');
-let tempCurrent = document.createElement('p');
+let currentStatus = document.createElement('p');
 let tempMax = document.createElement('p');
 let tempMin = document.createElement('p');
-let placeWeather = document.createElement('p');
+// let placeWeather = document.createElement('p'); 
 let placeWeatherDetail = document.createElement('p');
 let weatherIcon = document.createElement('img');
-displayDiv.appendChild(weatherIcon);
-displayDiv.appendChild(placeName);
-displayDiv.appendChild(tempCurrent);
-displayDiv.appendChild(tempMax);
-displayDiv.appendChild(tempMin);
-displayDiv.appendChild(placeWeather);
+
+//put sticker and city name in one bar
+let stickerDiv = document.createElement('div');
+stickerDiv.classList.add('sticker-div');
+stickerDiv.appendChild(weatherIcon);
+stickerDiv.appendChild(placeName);
+
+//stick min--max temps to either side
+let tempsDiv = document.createElement('div');
+tempsDiv.classList.add('temps-div');
+tempsDiv.appendChild(tempMin);
+tempsDiv.appendChild(tempMax);
+
+displayDiv.appendChild(stickerDiv);
+displayDiv.appendChild(currentStatus);
+displayDiv.appendChild(tempsDiv);
 displayDiv.appendChild(placeWeatherDetail);
 
 class City {
@@ -142,11 +149,10 @@ class City {
 async function populateInfo(myData){
     let placeData = await myData;
     // console.log(`from inside the populateInfo function, \n we're returning a new class: ${new City(placeData)}`);
-    placeName.innerHTML = `${placeData.name}, ${placeData.country}`;
-    tempCurrent.innerHTML = `${placeData.temp}° C now`;
+    placeName.innerHTML = `${(placeData.name).toLowerCase()}$ ${(placeData.country).toLowerCase()}`;
+    currentStatus.innerHTML = `${placeData.temp}° C, ${placeData.weather_detail}`;
     tempMax.innerHTML = `max: ${placeData.temp_max}° C`;
     tempMin.innerHTML = `min: ${placeData.temp_min}° C`;
-    placeWeather.innerHTML = placeData.weather;
     placeWeatherDetail.innerHTML = placeData.weather_detail;
     
     //Give icon an image depending on the weather
@@ -155,13 +161,44 @@ async function populateInfo(myData){
             console.log('Cloud icon should be visible');
             weatherIcon.src = './img/cloud.png';
             break;
+
+        case 'Rain':
+            weatherIcon.src = './img/rainy.png';
+            break;
     
         default:
             break;
     }
 
+    //for edge cases, such as overcast clouds instead of slightly cloudy:
+
+    switch(placeData.weather_detail) {
+        case 'overcast clouds':
+            weatherIcon.src = 'img/cloudy.png'
+    }
+
+
+
+
     console.log(new City(placeData))
 
 
     return new City(placeData)
+}
+
+
+async function createSlider(data) {
+    let myData = await data;
+
+    let slider = document.createElement('input');
+    slider.classList.add('slider');
+    let currentValue = myData.temp;
+    let minValue = myData.temp_min;
+    let maxValue = myData.temp_max //or try: querySelector('#tempMax');
+    slider.type = 'range';
+    slider.value = currentValue;
+    slider.min = minValue;
+    slider.max = maxValue;
+
+    displayDiv.appendChild(slider);
 }
