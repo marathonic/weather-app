@@ -5,7 +5,7 @@ const appContainer = document.createElement('div');
 appContainer.classList.add('app-container');
 
 const searchBar = document.createElement('input');
-searchBar.placeholder = '...';
+searchBar.placeholder = 'place';
 searchBar.classList.add('search-bar');
 
 
@@ -32,40 +32,21 @@ container.appendChild(appContainer);
 
 searchBtn.addEventListener('click', getData);
 
+searchBtn.addEventListener('click', function(){
+    populateInfo(getData());
+});
+
+
 async function getData(place) {
     try {
         if(searchBar.value === '' || searchBar.value === ' ') return false; 
 
         let searchTerm = searchBar.value;
-        console.log(`searched for: ${searchTerm}`);
 
         //Get all of the city's atmospheric data
         //For Kelvin units, delete '&units=metric'
         let cityResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&units=metric&appid=5476438a2af68421de84b1b40b773273`); 
         let cityData = await cityResponse.json();
-
-        // function justToHideTheseLinesBeforeDeleting(){
-
-
-        // let currentData = cityData; <-- trying w/o this line
-
-        // let currentTemperature = cityData.main.temp;
-        // let minTemperature = cityData.main.temp_min;
-        // let maxTemperature = cityData.main.temp_max;
- 
-        // console.log(cityData);
-        // console.log(`current temp is ${currentTemperature}`);
-        // console.log(`min temp is ${minTemperature}`);
-        // console.log(`max temp is ${maxTemperature}`);
-
-        // let weatherStatus = cityData.weather[0]['main'];
-        // console.log(weatherStatus);
-
-        //let's try returning cityData, and then,
-        //outside of this, in another function,
-        //say: function x() { let data = getData.then(do something with cityData) }
-
-        // }
 
         searchBar.value = '';
 
@@ -82,43 +63,18 @@ async function getData(place) {
     }   catch(err)   { console.log(err) }
 }
 
-searchBtn.addEventListener('click', function(){
-    // getCityWeather(getData())
-    // getDataReturned(getData());
 
 
 
-    populateInfo(getData());
-});
-
-
-// async function getWeatherStatus(){
-//     getData.then((myCityData) => {
-//         console.log(myCityData);
-//     })
-// }
-
-
-async function getCityWeather(city){
-    let readyCity = await city;
-    console.log(`From inside getCityWeather: \nthe weather status is: ${readyCity.weather_detail}`);
-}
-
-async function getDataReturned(funk){
-    let funkReady = await funk;
-    console.log(funkReady);
-}
-
-//Front-end & UI functionality
+//UI functionality
 
 let placeName = document.createElement('p');
 let currentStatus = document.createElement('p');
 let tempMax = document.createElement('p');
 let tempMin = document.createElement('p');
 let happyFace = document.createElement('p');
-happyFace.id = 'happy-face';
-// let placeWeather = document.createElement('p'); 
 let weatherIcon = document.createElement('img');
+happyFace.id = 'happy-face';
 
 //put sticker and city name in one bar
 let stickerDiv = document.createElement('div');
@@ -137,7 +93,6 @@ currentStatusDiv.classList.add('current-status-div');
 currentStatusDiv.appendChild(currentStatus);
 
 
-
 //stick min--max temps to either side
 let tempsDiv = document.createElement('div');
 tempsDiv.classList.add('temps-div');
@@ -150,7 +105,7 @@ displayDiv.appendChild(currentStatusDiv);
 displayDiv.appendChild(tempsDiv);
 displayDiv.appendChild(happyFace);
 
-//scribble a doodle at the bottom
+//make an object to hold the json values
 
 class City {
     constructor(place){
@@ -164,19 +119,19 @@ class City {
     }
 }
 
+//make a function to retrieve object data
+
 async function populateInfo(myData){
     try {
 
 
     let placeData = await myData;
     if(placeData.name === undefined) return false;
-    // console.log(`from inside the populateInfo function, \n we're returning a new class: ${new City(placeData)}`);
     placeName.innerHTML = (placeData.name);
     let lowerCasePlaceName = (placeName.innerHTML).toLowerCase();
     let countryName = (placeData.country);
     let lowerCaseCountryName = countryName.toLowerCase();
     placeName.innerHTML = `${(((lowerCasePlaceName).normalize('NFD').replace(/\p{Diacritic}/gu, '')))} ${(lowerCaseCountryName)}`;
-    // if(placeData.name == 'Minatitlán') placeName.innerHTML = 'minatitlan';
     currentStatus.innerHTML = `${placeData.temp}° C, ${placeData.weather_detail}`;
     tempMax.innerHTML = `max: ${placeData.temp_max}°`;
     tempMin.innerHTML = `min: ${placeData.temp_min}°`;
@@ -185,7 +140,6 @@ async function populateInfo(myData){
     //Give icon an image depending on the weather
     switch (placeData.weather) {
         case 'Clouds':
-            console.log('Cloud icon should be visible');
             weatherIcon.src = './img/cloud.png';
             break;
 
@@ -224,9 +178,6 @@ async function populateInfo(myData){
             break;
     }
 
-    console.log(new City(placeData))
-
-
     return new City(placeData)
 }   catch(err)   {
     console.log(err);
@@ -234,25 +185,3 @@ async function populateInfo(myData){
 
 }
 
-
-async function createSlider(data) {
-    let myData = await data;
-
-    let slider = document.createElement('input');
-    slider.classList.add('slider');
-    let currentValue = myData.temp;
-    let minValue = myData.temp_min;
-    let maxValue = myData.temp_max //or try: querySelector('#tempMax');
-    slider.type = 'range';
-    slider.value = currentValue;
-    slider.min = minValue;
-    slider.max = maxValue;
-
-    displayDiv.appendChild(slider);
-}
-
-//happyFace reloads the website
-
-happyFace.addEventListener('click', function(){
-    location.reload();
-})

@@ -28,13 +28,10 @@ body {
     grid-template-rows: repeat(4, 1fr);
 
     height: 700px;
-    /* border: solid black 2px; */
-
-    /* background-color: rgb(111, 122, 180);
-    background-color: whitesmoke; */
-
+/* fallback for the background img url */
     background: rgb(17,174,255);
     background: linear-gradient(162deg, rgba(17,174,255,0.7) 0%, rgba(30,142,200,0.2) 39%, rgba(98,220,232,1) 100%);
+
     background-image: url(./img/wrinkled-notebook-paper.jpg);
 }
 
