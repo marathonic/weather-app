@@ -67,6 +67,8 @@ async function getData(place) {
 
         // }
 
+        searchBar.value = '';
+
         return {
             name: cityData.name,
             country: cityData.sys.country,
