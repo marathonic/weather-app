@@ -30,15 +30,20 @@ body {
     height: 700px;
     /* border: solid black 2px; */
 
-    background-color: rgb(111, 122, 180);
-    background-color: whitesmoke;
+    /* background-color: rgb(111, 122, 180);
+    background-color: whitesmoke; */
+
+    background: rgb(17,174,255);
+    background: linear-gradient(162deg, rgba(17,174,255,0.7) 0%, rgba(30,142,200,0.2) 39%, rgba(98,220,232,1) 100%);
+    background-image: url(./img/wrinkled-notebook-paper.jpg);
 }
 
 .search-bar {
     height: 40px;
     border: none;
-    border-bottom: solid black 1px;
-    background-color: whitesmoke;
+    border-bottom: solid skyblue 1px;
+    background-color: transparent;
+    font-family: 'Short stack';
     font-size: 19px;
     padding: 10px;
 
@@ -49,7 +54,8 @@ body {
     width: 122px;
     border: none;
     background-color: none;
-    border-bottom: solid black 1px;
+    border-bottom: solid skyblue 1px;
+    font-family: 'Short stack';
 }
 
 .test-btn {
@@ -137,6 +143,23 @@ body {
 
   #happy-face{
       font-family: 'AGUSTINASANS';
+  }
+
+  .city-name-div {
+      display: flex;
+      justify-content: center;
+      justify-items: center;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+  }
+
+  .current-status-div {
+      display: flex;
+      justify-content: center;
+      
+      font-family: 'Permanent Marker';  
+      font-size: 1.8rem;
   }
 
 /* font-face rules */

@@ -34,8 +34,9 @@ searchBtn.addEventListener('click', getData);
 
 async function getData(place) {
     try {
+        if(searchBar.value === '' || searchBar.value === ' ') return false; 
 
-        let searchTerm = searchBar.value; 
+        let searchTerm = searchBar.value;
         console.log(`searched for: ${searchTerm}`);
 
         //Get all of the city's atmospheric data
@@ -128,6 +129,12 @@ let cityNameDiv = document.createElement('div');
 cityNameDiv.classList.add('city-name-div');
 cityNameDiv.appendChild(placeName);
 
+//put current status in its own div so it doesn't overflow
+let currentStatusDiv = document.createElement('div');
+currentStatusDiv.classList.add('current-status-div');
+currentStatusDiv.appendChild(currentStatus);
+
+
 
 //stick min--max temps to either side
 let tempsDiv = document.createElement('div');
@@ -137,7 +144,7 @@ tempsDiv.appendChild(tempMax);
 
 stickerDiv.appendChild(cityNameDiv);
 displayDiv.appendChild(stickerDiv);
-displayDiv.appendChild(currentStatus);
+displayDiv.appendChild(currentStatusDiv);
 displayDiv.appendChild(tempsDiv);
 displayDiv.appendChild(happyFace);
 
@@ -156,10 +163,18 @@ class City {
 }
 
 async function populateInfo(myData){
+    try {
+
+
     let placeData = await myData;
+    if(placeData.name === undefined) return false;
     // console.log(`from inside the populateInfo function, \n we're returning a new class: ${new City(placeData)}`);
-    placeName.innerHTML = `${(placeData.name).toLowerCase()} ${(placeData.country).toLowerCase()}`;
-    if(placeData.name == 'Minatitlán') placeName.innerHTML = 'minatitlan';
+    placeName.innerHTML = (placeData.name);
+    let lowerCasePlaceName = (placeName.innerHTML).toLowerCase();
+    let countryName = (placeData.country);
+    let lowerCaseCountryName = countryName.toLowerCase();
+    placeName.innerHTML = `${(((lowerCasePlaceName).normalize('NFD').replace(/\p{Diacritic}/gu, '')))} ${(lowerCaseCountryName)}`;
+    // if(placeData.name == 'Minatitlán') placeName.innerHTML = 'minatitlan';
     currentStatus.innerHTML = `${placeData.temp}° C, ${placeData.weather_detail}`;
     tempMax.innerHTML = `max: ${placeData.temp_max}°`;
     tempMin.innerHTML = `min: ${placeData.temp_min}°`;
@@ -207,13 +222,14 @@ async function populateInfo(myData){
             break;
     }
 
-
-
-
     console.log(new City(placeData))
 
 
     return new City(placeData)
+}   catch(err)   {
+    console.log(err);
+}
+
 }
 
 
@@ -232,3 +248,9 @@ async function createSlider(data) {
 
     displayDiv.appendChild(slider);
 }
+
+//happyFace reloads the website
+
+happyFace.addEventListener('click', function(){
+    location.reload();
+})
