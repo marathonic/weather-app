@@ -185,3 +185,6 @@ async function populateInfo(myData){
 
 }
 
+happyFace.addEventListener('click', function(){
+    location.reload();
+})
